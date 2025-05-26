@@ -3,7 +3,10 @@ let socketIOPromise;
 let socket;
 
 // Get the API URL from environment variables or use a default
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+// Remove the /api path from the end if it exists since socket.io needs the base URL
+const API_URL = process.env.NEXT_PUBLIC_API_URL 
+  ? process.env.NEXT_PUBLIC_API_URL.replace(/\/api$/, '')
+  : 'http://localhost:5000';
 
 const getSocketIO = async () => {
   if (!socketIOPromise) {
