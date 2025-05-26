@@ -20,8 +20,7 @@ const nextConfig: NextConfig = {
   },
   
   // Thêm cấu hình API proxy nếu cần
-  // Tắt tạm thời vì server backend chưa sẵn sàng
-  /*
+  // Bỏ comment để kích hoạt proxy API
   async rewrites() {
     return [
       {
@@ -30,7 +29,6 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  */
   
   // Thêm cấu hình cho images
   images: {

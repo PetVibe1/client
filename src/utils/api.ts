@@ -1,6 +1,31 @@
 import axios from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+// Log API URL for debugging
+console.log('Current environment:', process.env.NODE_ENV);
+console.log('API URL from env:', process.env.NEXT_PUBLIC_API_URL);
+const API_URL = process.env.NODE_ENV === 'production' 
+  ? '/api' 
+  : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+console.log('Using API URL:', API_URL);
+
+// Perform quick API connection test on load
+const testApiConnection = async () => {
+  try {
+    console.log('Testing API connection to:', `${API_URL}`);
+    const response = await axios.get(`${API_URL}`, { 
+      timeout: 5000,
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    });
+    console.log('API connection test result:', response.status, response.data);
+    return true;
+  } catch (error) {
+    console.error('API connection test failed:', error);
+    return false;
+  }
+};
+
+// Run the connection test
+testApiConnection();
 
 const api = axios.create({
   baseURL: API_URL,

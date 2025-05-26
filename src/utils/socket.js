@@ -2,11 +2,14 @@
 let socketIOPromise;
 let socket;
 
-// Get the API URL from environment variables or use a default
-// Remove the /api path from the end if it exists since socket.io needs the base URL
-const API_URL = process.env.NEXT_PUBLIC_API_URL 
-  ? process.env.NEXT_PUBLIC_API_URL.replace(/\/api$/, '')
-  : 'http://localhost:5000';
+// Sử dụng URL tương đối khi ở môi trường production (Netlify)
+const API_URL = process.env.NODE_ENV === 'production' 
+  ? '' // Empty for relative socket.io connection using same domain
+  : (process.env.NEXT_PUBLIC_API_URL 
+      ? process.env.NEXT_PUBLIC_API_URL.replace(/\/api$/, '')
+      : 'http://localhost:5000');
+
+console.log('Socket.IO using URL:', API_URL || 'current domain (relative)');
 
 const getSocketIO = async () => {
   if (!socketIOPromise) {
