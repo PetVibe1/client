@@ -26,7 +26,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'http://localhost:5000/api/:path*',
+        destination: 'https://server-wv4w.onrender.com/api/:path*',
       },
     ];
   },
