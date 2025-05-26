@@ -390,7 +390,7 @@ const AdminDashboard: NextPage = () => {
 
     return {
       data: formattedData,
-      categories: [{ name: "Số lượng", color: "#f59e0b" }]
+      categories: [{ name: "Số lượng", color: "#3b82f6" }]
     };
   }, [dashboardStats]);
   
@@ -769,11 +769,12 @@ const AdminDashboard: NextPage = () => {
               <FontAwesomeIcon icon={faComment} className="mr-2 text-amber-500" />
               Bình luận chưa đọc
             </h2>
-            <Link href="/admin/comments">
-              <a className="text-sm text-blue-600 hover:text-blue-800 flex items-center">
-                Xem tất cả
-                <FontAwesomeIcon icon={faExternalLinkAlt} className="ml-1 text-xs" />
-              </a>
+            <Link 
+              href="/admin/comments" 
+              className="text-sm text-blue-600 hover:text-blue-800 flex items-center"
+            >
+              Xem tất cả
+              <FontAwesomeIcon icon={faExternalLinkAlt} className="ml-1 text-xs" />
             </Link>
           </div>
           
@@ -799,19 +800,21 @@ const AdminDashboard: NextPage = () => {
                         <p className="text-xs text-gray-500">{formatDetailedTime(comment.createdAt)}</p>
                       </div>
                     </div>
-                    <Link href={`/admin/comments`}>
-                      <a className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full hover:bg-blue-200">
-                        <FontAwesomeIcon icon={faReply} className="mr-1" />
-                        Phản hồi
-                      </a>
+                    <Link 
+                      href={`/admin/comments`} 
+                      className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full hover:bg-blue-200"
+                    >
+                      <FontAwesomeIcon icon={faReply} className="mr-1" />
+                      Phản hồi
                     </Link>
                   </div>
                   <p className="text-gray-700 text-sm mb-2 line-clamp-2">{comment.content}</p>
                   <div className="text-right">
-                    <Link href={`/pets/${comment.petId}`}>
-                      <a className="text-xs text-gray-500 hover:text-[#003459]">
-                        Xem thú cưng
-                      </a>
+                    <Link 
+                      href={`/pets/${comment.petId}`}
+                      className="text-xs text-gray-500 hover:text-[#003459]"
+                    >
+                      Xem thú cưng
                     </Link>
                   </div>
                 </div>
@@ -819,10 +822,11 @@ const AdminDashboard: NextPage = () => {
               
               {unreadComments.length > 3 && (
                 <div className="text-center pt-2">
-                  <Link href="/admin/comments">
-                    <a className="text-sm text-blue-600 hover:text-blue-800">
-                      + {unreadComments.length - 3} bình luận khác
-                    </a>
+                  <Link 
+                    href="/admin/comments" 
+                    className="text-sm text-blue-600 hover:text-blue-800"
+                  >
+                    + {unreadComments.length - 3} bình luận khác
                   </Link>
                 </div>
               )}

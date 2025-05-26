@@ -51,13 +51,13 @@ export function ShadcnBarChart({
                 dataKey={index}
                 axisLine={false}
                 tickLine={false}
-                tick={{ fill: '#6b7280', fontSize: 12 }}
+                tick={{ fill: '#000000', fontSize: 13, fontWeight: 600 }}
                 tickMargin={10}
               />
               <YAxis
                 axisLine={false}
                 tickLine={false}
-                tick={{ fill: '#6b7280', fontSize: 12 }}
+                tick={{ fill: '#1e293b', fontSize: 13, fontWeight: 500 }}
                 tickMargin={8}
                 tickFormatter={valueFormatter}
               />
@@ -68,7 +68,7 @@ export function ShadcnBarChart({
                     if (active && payload && payload.length) {
                       return (
                         <div className="rounded-lg border border-slate-100 bg-white shadow-md p-3">
-                          <div className="mb-2 font-medium">{label}</div>
+                          <div className="mb-2 font-medium text-black">{label}</div>
                           <div className="flex flex-col gap-1.5">
                             {payload.map((item, index) => (
                               <div key={index} className="flex items-center gap-2">
@@ -76,7 +76,7 @@ export function ShadcnBarChart({
                                   className="h-3 w-3 rounded-full"
                                   style={{ backgroundColor: item.color }}
                                 />
-                                <span className="text-sm text-slate-600">
+                                <span className="text-sm text-black font-medium">
                                   {item.name}: {valueFormatter(item.value as number)}
                                 </span>
                               </div>
@@ -97,7 +97,7 @@ export function ShadcnBarChart({
                   iconType="circle"
                   iconSize={8}
                   formatter={(value) => (
-                    <span className="text-xs font-medium text-slate-600">{value}</span>
+                    <span className="text-xs font-medium text-black">{value}</span>
                   )}
                 />
               )}

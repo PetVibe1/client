@@ -39,15 +39,16 @@ const Header = () => {
       <div className="flex items-center space-x-4">
         {/* Notifications */}
         {user?.role === 'admin' && (
-          <Link href="/admin/comments">
-            <a className="relative p-2 text-gray-500 hover:text-[#003459] transition-colors">
-              <FontAwesomeIcon icon={faBell} className="text-xl" />
-              {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {unreadCount > 99 ? '99+' : unreadCount}
-                </span>
-              )}
-            </a>
+          <Link 
+            href="/admin/comments"
+            className="relative p-2 text-gray-500 hover:text-[#003459] transition-colors"
+          >
+            <FontAwesomeIcon icon={faBell} className="text-xl" />
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                {unreadCount > 99 ? '99+' : unreadCount}
+              </span>
+            )}
           </Link>
         )}
         
@@ -61,17 +62,18 @@ const Header = () => {
               <FontAwesomeIcon icon={faUser} />
             </div>
             <span className="text-gray-700 font-medium hidden md:block">
-              {user?.name || 'Admin User'}
+              {user ? `${user.firstName} ${user.lastName}` : 'Admin User'}
             </span>
           </button>
           
           {showDropdown && (
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10 border border-gray-100">
-              <Link href="/admin/profile">
-                <a className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
-                  <FontAwesomeIcon icon={faUser} className="mr-2 text-gray-500" />
-                  Profile
-                </a>
+              <Link 
+                href="/admin/profile"
+                className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+              >
+                <FontAwesomeIcon icon={faUser} className="mr-2 text-gray-500" />
+                Profile
               </Link>
               <button 
                 className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"

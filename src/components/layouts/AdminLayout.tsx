@@ -248,7 +248,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className="flex h-screen bg-amber-50">
+    <div className="flex h-screen bg-white">
       {/* Mobile sidebar overlay */}
       <div className={`md:hidden fixed inset-0 z-40 ${sidebarOpen ? 'block' : 'hidden'}`}>
         <div className="fixed inset-0 bg-slate-800 bg-opacity-75" onClick={() => setSidebarOpen(false)}></div>
@@ -427,7 +427,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
         </header>
 
         {/* Main content area */}
-        <main className="flex-1 relative overflow-y-auto bg-amber-50 focus:outline-none">
+        <main className="flex-1 relative overflow-y-auto bg-white focus:outline-none">
           <div className="py-6 md:px-6 px-4">
             {children}
           </div>

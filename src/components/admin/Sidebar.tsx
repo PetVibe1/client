@@ -59,29 +59,28 @@ const Sidebar = () => {
         <ul className="space-y-2">
           {menuItems.map((item) => (
             <li key={item.name}>
-              <Link href={item.href}>
-                <a
-                  className={`flex items-center px-4 py-3 text-sm ${
-                    router.pathname === item.href || router.pathname.startsWith(`${item.href}/`)
-                      ? 'bg-blue-800 text-white'
-                      : 'text-blue-100 hover:bg-blue-700'
-                  } rounded-lg transition-colors ${isCollapsed ? 'justify-center' : ''}`}
-                >
-                  <div className="relative">
-                    <FontAwesomeIcon icon={item.icon} className={`${isCollapsed ? 'text-xl' : 'mr-4'}`} />
-                    {item.badge && (
-                      <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                        {item.badge > 99 ? '99+' : item.badge}
-                      </span>
-                    )}
-                  </div>
-                  {!isCollapsed && <span>{item.name}</span>}
-                  {!isCollapsed && item.badge && (
-                    <span className="ml-auto bg-red-500 text-white text-xs rounded-full px-2 py-1">
+              <Link 
+                href={item.href}
+                className={`flex items-center px-4 py-3 text-sm ${
+                  router.pathname === item.href || router.pathname.startsWith(`${item.href}/`)
+                    ? 'bg-blue-800 text-white'
+                    : 'text-blue-100 hover:bg-blue-700'
+                } rounded-lg transition-colors ${isCollapsed ? 'justify-center' : ''}`}
+              >
+                <div className="relative">
+                  <FontAwesomeIcon icon={item.icon} className={`${isCollapsed ? 'text-xl' : 'mr-4'}`} />
+                  {item.badge && (
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                       {item.badge > 99 ? '99+' : item.badge}
                     </span>
                   )}
-                </a>
+                </div>
+                {!isCollapsed && <span>{item.name}</span>}
+                {!isCollapsed && item.badge && (
+                  <span className="ml-auto bg-red-500 text-white text-xs rounded-full px-2 py-1">
+                    {item.badge > 99 ? '99+' : item.badge}
+                  </span>
+                )}
               </Link>
             </li>
           ))}

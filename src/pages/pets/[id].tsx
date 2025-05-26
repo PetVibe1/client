@@ -7,7 +7,7 @@ import { getPetById, getCommentsByPetId, addComment, addCommentReply, getSimilar
 import MainLayout from '../../components/layouts/MainLayout';
 import PetItem from '../../components/pets/PetItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComment, faPhone, faShare, faArrowRight, faPaperPlane, faStar, faLock, faUser, faReply, faShield } from '@fortawesome/free-solid-svg-icons';
+import { faComment, faPhone, faShare, faArrowRight, faPaperPlane, faStar, faLock, faUser, faReply, faShield, faCheck, faFlag } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF, faTwitter, faInstagram, faYoutube } from '@fortawesome/free-brands-svg-icons';
 
 // Reply interface
@@ -66,6 +66,44 @@ const PetDetail = () => {
   const [error, setError] = useState<string | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [activeTestimonialIndex, setActiveTestimonialIndex] = useState(0);
+  const testimonialContainerRef = useRef<HTMLDivElement>(null);
+  
+  // CSS styles for customers section
+  const customStyles = `
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    
+    @keyframes pulse-light {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+    
+    .animate-pulse-light {
+      animation: pulse-light 2s ease-in-out infinite;
+    }
+    
+    @keyframes testimonial-fade {
+      0% { opacity: 0.7; transform: translateX(20px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+    
+    .testimonial-slide {
+      animation: testimonial-fade 0.5s ease forwards;
+    }
+    
+    .active-testimonial-image {
+      box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
+    }
+    
+    .active-testimonial-image img {
+      filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.2)) contrast(1.05);
+    }
+  `;
   
   // Comment state
   const [comments, setComments] = useState<Comment[]>([]);
@@ -91,11 +129,36 @@ const PetDetail = () => {
 
   // Mảng hình ảnh khách hàng giả lập
   const testimonials = [
-    { id: 1, image: "/images/testimonials/image 22 (1).png" },
-    { id: 2, image: "/images/testimonials/image 22 (2).png" },
-    { id: 3, image: "/images/testimonials/image 22 (3).png" },
-    { id: 4, image: "/images/testimonials/image 22.png" },
-    { id: 5, image: "/images/testimonials/testimonial-5.jpg" },
+    { 
+      id: 1, 
+      image: "/images/testimonials/image 22 (1).png",
+      name: "Nguyễn Văn An",
+      country: "VN"
+    },
+    { 
+      id: 2, 
+      image: "/images/testimonials/image 22 (2).png",
+      name: "Trần Minh Hiếu",
+      country: "VN" 
+    },
+    { 
+      id: 3, 
+      image: "/images/testimonials/image 22 (3).png",
+      name: "Phạm Thị Hoa",
+      country: "VN"
+    },
+    { 
+      id: 4, 
+      image: "/images/testimonials/image 22.png",
+      name: "David Smith",
+      country: "US"
+    },
+    { 
+      id: 5, 
+      image: "/images/testimonials/testimonial-5.jpg",
+      name: "Tanaka Yuki",
+      country: "JP"
+    },
   ];
 
   // Check authentication status
@@ -119,6 +182,15 @@ const PetDetail = () => {
       }
     }
   }, []);
+
+  // Auto-scroll testimonials
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveTestimonialIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+    }, 5000); // Change every 5 seconds
+    
+    return () => clearInterval(interval);
+  }, [testimonials.length]);
 
   // Fetch pet data and comments with polling
   useEffect(() => {
@@ -172,6 +244,18 @@ const PetDetail = () => {
   // Xử lý khi click vào nút chuyển testimonial
   const handleTestimonialDotClick = (index: number) => {
     setActiveTestimonialIndex(index);
+    
+    // Scroll to the active testimonial smoothly
+    if (testimonialContainerRef.current) {
+      const container = testimonialContainerRef.current;
+      const itemWidth = 320 + 32; // width(80) + padding/gap(8*4)
+      const scrollPosition = index * itemWidth;
+      
+      container.scrollTo({
+        left: scrollPosition,
+        behavior: 'smooth'
+      });
+    }
   };
 
   // Xử lý khi click vào nút chat
@@ -408,6 +492,7 @@ const PetDetail = () => {
           name="description"
           content={`Chi tiết về ${pet.name} tại cửa hàng thú cưng Monitö`}
         />
+        <style dangerouslySetInnerHTML={{ __html: customStyles }} />
       </Head>
 
       <div className="bg-white">
@@ -580,34 +665,180 @@ const PetDetail = () => {
           </div>
 
           {/* Customer Testimonials */}
-          <div className="mb-16">
-            <h2 className="text-2xl font-bold text-slate-800 mb-8">
+          <div className="mb-16 bg-gradient-to-r from-blue-50 to-white rounded-2xl p-8 pb-16 shadow-sm border border-gray-100 relative">
+            <h2 className="text-2xl font-bold text-[#003459] mb-8 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
               Khách hàng của chúng tôi
             </h2>
 
-            <div className="relative overflow-hidden">
+            <div className="relative overflow-visible py-4" style={{ background: "radial-gradient(circle at 100% 100%, rgba(3,52,89,0.03), transparent 400px)" }}>
               {/* Testimonial Slides */}
-              <div className="flex gap-4 overflow-x-auto pb-4 hide-scrollbar">
+              <div ref={testimonialContainerRef} className="flex gap-8 overflow-x-auto pb-12 hide-scrollbar px-2">
                 {testimonials.map((testimonial, index) => (
-                  <div key={testimonial.id} className="flex-none w-60 h-44">
-                    <img
-                      src={testimonial.image}
-                      alt={`Khách hàng ${index + 1}`}
-                      className="w-full h-full object-cover rounded-lg"
-                    />
+                  <div 
+                    key={testimonial.id} 
+                    className={`flex-none w-80 h-80 transition-all duration-300 transform ${
+                      activeTestimonialIndex === index 
+                        ? 'scale-[1.03] testimonial-slide z-10 active-testimonial-image' 
+                        : 'scale-100 opacity-90'
+                    }`}
+                  >
+                    <div className={`relative h-full group bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all ${
+                      activeTestimonialIndex === index
+                        ? 'border-2 border-amber-400 shadow-amber-100'
+                        : 'border border-gray-100'
+                    }`}>
+                      <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-amber-500 rounded-tl-lg"></div>
+                      <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-amber-500 rounded-tr-lg"></div>
+                      <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-amber-500 rounded-bl-lg"></div>
+                      <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-amber-500 rounded-br-lg"></div>
+                      
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center">
+                          <div className="w-9 h-9 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center mr-2 border border-amber-200 shadow-sm">
+                            {testimonial.name.charAt(0).toUpperCase()}
+                          </div>
+                          <div>
+                            <p className="font-medium text-[#003459] line-clamp-1">{testimonial.name}</p>
+                            <div className="flex items-center text-xs text-gray-500">
+                              {testimonial.country === "VN" && (
+                                <span className="flex items-center">
+                                  <span className="inline-block w-4 h-3 bg-red-600 mr-1 relative">
+                                    <span className="absolute inset-0 flex items-center justify-center">
+                                      <span className="text-yellow-300 text-[8px]">★</span>
+                                    </span>
+                                  </span>
+                                  Việt Nam
+                                </span>
+                              )}
+                              {testimonial.country === "US" && (
+                                <span className="flex items-center">
+                                  <span className="inline-block w-4 h-3 bg-blue-600 mr-1 relative overflow-hidden">
+                                    <span className="absolute top-0 left-0 w-2 h-2 bg-blue-600">
+                                      <span className="absolute inset-0 text-white text-[6px] flex items-center justify-center">★</span>
+                                    </span>
+                                  </span>
+                                  United States
+                                </span>
+                              )}
+                              {testimonial.country === "JP" && (
+                                <span className="flex items-center">
+                                  <span className="inline-block w-4 h-3 bg-white mr-1 border border-gray-200 relative">
+                                    <span className="absolute inset-0 flex items-center justify-center">
+                                      <span className="w-2 h-2 rounded-full bg-red-600"></span>
+                                    </span>
+                                  </span>
+                                  Japan
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full">
+                          {index + 1}/5
+                        </div>
+                      </div>
+                      <div className="h-[75%] flex items-center justify-center overflow-hidden rounded-lg bg-white p-3 relative mt-1">
+                        {/* Decorative border */}
+                        <div className="absolute inset-0 rounded-lg" style={{ 
+                          background: 'linear-gradient(145deg, rgba(251,191,36,0.3) 0%, rgba(217,119,6,0.1) 100%)',
+                          padding: '1px'
+                        }}>
+                          <div className="absolute inset-0 bg-white rounded-lg"></div>
+                        </div>
+                        
+                        {/* Image container */}
+                        <div className={`relative z-10 w-full h-full rounded-md overflow-hidden border ${
+                          activeTestimonialIndex === index
+                            ? 'border-amber-200 active-testimonial-image'
+                            : 'border-amber-100'
+                        } shadow-inner bg-gray-50 flex items-center justify-center p-1`}
+                            style={{
+                              boxShadow: 'inset 0 2px 4px 0 rgba(0,0,0,0.06)'
+                            }}>
+                          <img
+                            src={testimonial.image}
+                            alt={`Khách hàng ${testimonial.name}`}
+                            className="max-h-full max-w-full object-contain rounded-sm transition-all"
+                            style={{ 
+                              aspectRatio: 'auto',
+                              filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.1))'
+                            }}
+                          />
+                        </div>
+                        
+                        {/* Corner decorations */}
+                        <div className="absolute -top-1 -left-1 w-3 h-3 bg-amber-500 rounded-full"></div>
+                        <div className="absolute -top-1 -right-1 w-3 h-3 bg-amber-500 rounded-full"></div>
+                        <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-amber-500 rounded-full"></div>
+                        <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-amber-500 rounded-full"></div>
+                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-end">
+                        <div className="p-4 text-white w-full bg-black/40 rounded-b-xl">
+                          <p className="font-medium">{testimonial.name}</p>
+                          <div className="flex items-center text-sm opacity-90">
+                            <span className="mr-2">Hạnh phúc với thú cưng từ Monitö</span>
+                            {testimonial.country === "VN" && (
+                              <span className="inline-block w-4 h-3 bg-red-600 relative">
+                                <span className="absolute inset-0 flex items-center justify-center">
+                                  <span className="text-yellow-300 text-[8px]">★</span>
+                                </span>
+                              </span>
+                            )}
+                            {testimonial.country === "US" && (
+                              <span className="inline-block w-4 h-3 bg-blue-600 relative overflow-hidden">
+                                <span className="absolute top-0 left-0 w-2 h-2 bg-blue-600">
+                                  <span className="absolute inset-0 text-white text-[6px] flex items-center justify-center">★</span>
+                                </span>
+                              </span>
+                            )}
+                            {testimonial.country === "JP" && (
+                              <span className="inline-block w-4 h-3 bg-white border border-gray-200 relative">
+                                <span className="absolute inset-0 flex items-center justify-center">
+                                  <span className="w-2 h-2 rounded-full bg-red-600"></span>
+                                </span>
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
 
+              {/* Navigation arrows - Positioned at bottom right */}
+              <div className="absolute -bottom-6 right-8 flex space-x-4 z-30">
+                <button 
+                  className="bg-[#8DD8FF] text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all hover:bg-[#7AC6EE]"
+                  onClick={() => handleTestimonialDotClick(activeTestimonialIndex === 0 ? testimonials.length - 1 : activeTestimonialIndex - 1)}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                </button>
+                
+                <button 
+                  className="bg-[#8DD8FF] text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all hover:bg-[#7AC6EE]"
+                  onClick={() => handleTestimonialDotClick((activeTestimonialIndex + 1) % testimonials.length)}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
+                </button>
+              </div>
+
               {/* Indicator Dots */}
-              <div className="flex justify-center mt-4 gap-2">
+              <div className="absolute -bottom-14 left-0 right-0 flex justify-center gap-3 z-10">
                 {testimonials.map((_, index) => (
                   <button
                     key={index}
-                    className={`w-3 h-3 rounded-full ${
+                    className={`w-2.5 h-2.5 rounded-full transition-all ${
                       activeTestimonialIndex === index
-                        ? "bg-[#003459]"
-                        : "bg-gray-300"
+                        ? "bg-[#003459] w-6"
+                        : "bg-gray-300 hover:bg-gray-400"
                     }`}
                     onClick={() => handleTestimonialDotClick(index)}
                   />

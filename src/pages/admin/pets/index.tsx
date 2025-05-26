@@ -190,15 +190,12 @@ const PetsListPage: NextPage = () => {
 
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-slate-800">Quản lý thú cưng</h1>
-        <Link href="/admin/pets/create">
-          <Button 
-            variant="default" 
-            size="md" 
-            className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700"
-          >
-            <FontAwesomeIcon icon={faPlusCircle} />
-            <span>Thêm thú cưng</span>
-          </Button>
+        <Link 
+          href="/admin/pets/create"
+          className="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white px-4 py-2 rounded-md font-medium text-sm"
+        >
+          <FontAwesomeIcon icon={faPlusCircle} />
+          <span>Thêm thú cưng</span>
         </Link>
       </div>
 
