@@ -4,11 +4,8 @@ import axios from 'axios';
 console.log('Current environment:', process.env.NODE_ENV);
 console.log('API URL from env:', process.env.NEXT_PUBLIC_API_URL);
 
-// For production and development with Next.js API routes, use relative paths
-// This takes advantage of the proxy in next.config.ts
-const API_URL = process.env.NODE_ENV === 'production' 
-  ? '/api' 
-  : (process.env.NODE_ENV === 'development' ? '/api' : 'http://localhost:5000/api');
+// Use the API URL from environment variable directly
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 console.log('Using API URL:', API_URL);
 
 // Perform quick API connection test on load
