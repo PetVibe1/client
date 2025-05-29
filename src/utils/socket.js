@@ -2,14 +2,21 @@
 let socketIOPromise;
 let socket;
 
-// Sử dụng URL tương đối khi ở môi trường production (Netlify)
-const API_URL = process.env.NODE_ENV === 'production' 
-  ? '' // Empty for relative socket.io connection using same domain
-  : (process.env.NEXT_PUBLIC_API_URL 
-      ? process.env.NEXT_PUBLIC_API_URL.replace(/\/api$/, '')
-      : 'http://localhost:5000');
+// Get the API URL from environment variables or use a default
+// Use relative path in production/development with Next.js
+const getBaseUrl = () => {
+  if (process.env.NODE_ENV === 'production') {
+    return ''; // Empty for relative path in production
+  } else if (process.env.NODE_ENV === 'development') {
+    return ''; // Empty for relative path in development
+  } else {
+    // Local development without Next.js
+    return 'http://localhost:5000'; 
+  }
+};
 
-console.log('Socket.IO using URL:', API_URL || 'current domain (relative)');
+const API_BASE_URL = getBaseUrl();
+console.log('Socket using base URL:', API_BASE_URL || 'relative path');
 
 const getSocketIO = async () => {
   if (!socketIOPromise) {
@@ -28,7 +35,7 @@ export const initSocket = async () => {
     const io = await getSocketIO();
     
     // Create socket connection with explicit default namespace
-    socket = io(API_URL, {
+    socket = io(API_BASE_URL, {
       transports: ['websocket', 'polling'],
       autoConnect: true,
       reconnectionAttempts: 5,

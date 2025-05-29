@@ -33,8 +33,8 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Comfortaa', 'cursive'],
-        comfortaa: ['Comfortaa', 'cursive'],
+        sans: ['Quicksand', 'cursive'],
+        Quicksand: ['Quicksand', 'cursive'],
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

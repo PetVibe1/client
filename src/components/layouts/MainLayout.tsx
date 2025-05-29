@@ -82,8 +82,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-2xl font-bold text-slate-800 font-comfortaa">Monitö</span>
-                <span className="text-xs text-slate-500 font-comfortaa">pets for best</span>
+                <span className="text-2xl font-bold text-slate-800 font-Quicksand">Monitö</span>
+                <span className="text-xs text-slate-500 font-Quicksand">pets for best</span>
               </div>
             </Link>
 

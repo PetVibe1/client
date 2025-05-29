@@ -3,36 +3,51 @@ import axios from 'axios';
 // Log API URL for debugging
 console.log('Current environment:', process.env.NODE_ENV);
 console.log('API URL from env:', process.env.NEXT_PUBLIC_API_URL);
+
+// For production and development with Next.js API routes, use relative paths
+// This takes advantage of the proxy in next.config.ts
 const API_URL = process.env.NODE_ENV === 'production' 
   ? '/api' 
-  : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api');
+  : (process.env.NODE_ENV === 'development' ? '/api' : 'http://localhost:5000/api');
 console.log('Using API URL:', API_URL);
 
 // Perform quick API connection test on load
 const testApiConnection = async () => {
   try {
     console.log('Testing API connection to:', `${API_URL}`);
+    
+    // Use a simple health check endpoint
     const response = await axios.get(`${API_URL}`, { 
-      timeout: 5000,
-      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      timeout: 8000,
+      headers: { 
+        'X-Requested-With': 'XMLHttpRequest',
+        'Cache-Control': 'no-cache'
+      }
     });
+    
     console.log('API connection test result:', response.status, response.data);
     return true;
   } catch (error) {
     console.error('API connection test failed:', error);
+    // Don't let this error crash the application
     return false;
   }
 };
 
-// Run the connection test
-testApiConnection();
-
-const api = axios.create({
+// Create axios instance with proper configuration
+export const api = axios.create({
   baseURL: API_URL,
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
-  },
+    'X-Requested-With': 'XMLHttpRequest'
+  }
 });
+
+// Run the connection test, but don't block app initialization
+setTimeout(() => {
+  testApiConnection().catch(err => console.warn('API test failed silently:', err));
+}, 1000);
 
 // Add auth token to requests if available
 api.interceptors.request.use(

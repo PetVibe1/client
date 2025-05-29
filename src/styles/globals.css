@@ -1,20 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 
 /* Thêm khai báo font-face để đảm bảo font hoạt động */
 @font-face {
-  font-family: 'Comfortaa';
+  font-family: 'Quicksand';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400&display=swap') format('woff2');
+  src: url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400&display=swap') format('woff2');
 }
 
 @font-face {
-  font-family: 'Comfortaa';
+  font-family: 'Quicksand';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap') format('woff2');
+  src: url('https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap') format('woff2');
 }
 
 @tailwind base;
@@ -24,7 +24,7 @@
 @layer base {
   html,
   body {
-    font-family: 'Comfortaa', cursive;
+    font-family: 'Quicksand', cursive;
   }
   
   body {
